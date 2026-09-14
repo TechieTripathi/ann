@@ -209,10 +209,14 @@ clicks: 5
 <div v-click="4" class="confession">
   <div class="ch">The confession — what our own loss cost us. I promised you this on slide 5</div>
   <table class="ct">
-    <tr><th></th><th>squared error &nbsp;<i>(what we used)</i></th><th>cross-entropy</th></tr>
-    <tr><td>blame at output, δ</td><td>(o−t)·σ′</td><td>(o−t)</td></tr>
-    <tr><td>on <i>our</i> forward pass, δ<sub>o1</sub></td><td class="bad">0.1385</td><td class="good">0.7414</td></tr>
-    <tr><td>network says 0.999, truth is 0</td><td class="bad">0.000998</td><td class="good">0.999</td></tr>
+    <thead>
+      <tr><th></th><th>squared error &nbsp;<i>(what we used)</i></th><th>cross-entropy</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>blame at output, δ</td><td>(o−t)·σ′</td><td>(o−t)</td></tr>
+      <tr><td>on <i>our</i> forward pass, δ<sub>o1</sub></td><td class="bad">0.1385</td><td class="good">0.7414</td></tr>
+      <tr><td>network says 0.999, truth is 0</td><td class="bad">0.000998</td><td class="good">0.999</td></tr>
+    </tbody>
   </table>
 </div>
 

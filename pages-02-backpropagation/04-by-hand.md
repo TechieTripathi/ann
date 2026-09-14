@@ -445,8 +445,10 @@ clicks: 6
 <div v-click="6" class="ladder">
   <div class="lh">Loss, if we keep going</div>
   <table class="lt">
-    <tr><th>steps</th><td>0</td><td>1</td><td>2</td><td>10</td><td>100</td><td>1 000</td><td>10 000</td></tr>
-    <tr><th>E</th><td>0.2984</td><td class="hi">0.2805</td><td>0.2619</td><td>0.1255</td><td>0.0061</td><td>0.0003</td><td>2.4e-6</td></tr>
+    <tbody>
+      <tr><th>steps</th><td>0</td><td>1</td><td>2</td><td>10</td><td>100</td><td>1 000</td><td>10 000</td></tr>
+      <tr><th>E</th><td>0.2984</td><td class="hi">0.2805</td><td>0.2619</td><td>0.1255</td><td>0.0061</td><td>0.0003</td><td>2.4e-6</td></tr>
+    </tbody>
   </table>
 </div>
 
