@@ -1,0 +1,21 @@
+{
+  "name": "ann-lecture-slides",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev lecture-01-ann.md --open",
+    "build": "slidev build lecture-01-ann.md",
+    "export": "slidev export lecture-01-ann.md",
+    
+    "dev:02": "slidev lecture-02-backpropagation.md --open",
+    "build:02": "slidev build lecture-02-backpropagation.md",
+    "export:02": "slidev export lecture-02-backpropagation.md",
+    "verify": "python3 scripts/verify-numbers.py"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.19.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "^3.5.33"
+  }
+}

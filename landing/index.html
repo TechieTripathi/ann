@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artificial Neural Networks — Lecture Series</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f4ee; --raised:#fff; --ink:#1b1d23; --ink-soft:#4a4c54;
+    --ember:#e1592c; --ember-soft:#f7ded3; --circuit:#0e7c86; --circuit-soft:#d9edee;
+    --indigo:#363b6e; --indigo-soft:#e2e3ef; --muted:#8a8272; --line:#ddd7c8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#14161b; --raised:#1c1f26; --ink:#ece9e2; --ink-soft:#b7b3a8;
+      --ember:#ff8058; --ember-soft:#3a2620; --circuit:#4fd0da; --circuit-soft:#17343a;
+      --indigo:#9aa0e8; --indigo-soft:#262a4a; --muted:#938f80; --line:#33363f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:Inter,ui-sans-serif,system-ui,sans-serif; line-height:1.55;
+    padding:16px;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding-block:clamp(2.5rem,8vw,5rem)}
+  .eyebrow{
+    font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.72rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+    display:flex; align-items:center; gap:.5em; margin-bottom:.8em;
+  }
+  .eyebrow::before{content:"";width:.55em;height:.55em;border-radius:999px;background:currentColor}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.15;margin:0 0 .3em;letter-spacing:-.01em}
+  .sub{color:var(--ink-soft);max-width:42em;margin:0 0 2.5em}
+  .decks{display:flex;flex-direction:column;gap:1rem}
+  a.deck{
+    display:block; text-decoration:none; color:inherit;
+    background:var(--raised); border:1px solid var(--line);
+    border-left:4px solid var(--circuit); border-radius:.7rem;
+    padding:1.15rem 1.4rem; transition:transform .14s ease, box-shadow .14s ease;
+  }
+  a.deck:hover,a.deck:focus-visible{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.09)}
+  a.deck.two{border-left-color:var(--ember)}
+  .num{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.68rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
+  }
+  .dt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;margin:.15em 0 .3em}
+  a.deck .dt{color:var(--circuit)}
+  a.deck.two .dt{color:var(--ember)}
+  .dd{font-size:.9rem;color:var(--ink-soft);margin:0}
+  .meta{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.7rem;
+    color:var(--muted);margin-top:.6em;display:flex;gap:1.2em;flex-wrap:wrap
+  }
+  footer{margin-top:3rem;font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Lecture series</div>
+  <h1>Artificial Neural Networks</h1>
+  <p class="sub">
+    A two-part conceptual introduction: from the limits of hand-written rules to a
+    single artificial neuron, and then to the mathematics that actually makes a
+    network learn. Use <kbd>←</kbd> and <kbd>→</kbd> to move; press <kbd>o</kbd> for
+    an overview of any deck.
+  </p>
+
+  <div class="decks">
+    <a class="deck" href="lecture-01/">
+      <div class="num">Lecture 01</div>
+      <div class="dt">Artificial Neural Networks</div>
+      <p class="dd">Why rules break down, why machine learning replaced them, what one biological neuron
+      inspired, and how a network of artificial neurons is put together.</p>
+      <div class="meta"><span>31 slides</span><span>~90 min</span><span>conceptual, no coding</span></div>
+    </a>
+
+    <a class="deck two" href="lecture-02/">
+      <div class="num">Lecture 02</div>
+      <div class="dt">Backpropagation</div>
+      <p class="dd">The number, the direction and the nudge. Loss functions, gradient descent, the chain
+      rule, and one worked example computed entirely by hand — then written once for any network.</p>
+      <div class="meta"><span>31 slides</span><span>~90 min</span><span>mathematics</span></div>
+    </a>
+  </div>
+
+  <footer>
+    Built with <a href="https://sli.dev" style="color:var(--muted)">Slidev</a>.
+    Every figure in Lecture 02 is generated and checked by <code>scripts/verify-numbers.py</code>.
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,320 @@
+/*
+  Design system for "Artificial Neural Networks" lecture deck.
+  Palette logic: ember (warm) = biological / intuitive side of every analogy.
+                 circuit (cool teal) = artificial / engineered side.
+                 indigo = structural (architecture, chapters, depth).
+  The duotone is not decorative: it is the same split the whole lecture
+  teaches (biology inspires, math formalizes), applied consistently to
+  color so students learn to read "warm = intuition, cool = mechanism".
+*/
+
+:root {
+  --ann-paper: #f7f4ee;
+  --ann-paper-raised: #ffffff;
+  --ann-ink: #1b1d23;
+  --ann-ink-soft: #4a4c54;
+  --ann-ember: #e1592c;
+  --ann-ember-soft: #f7ded3;
+  --ann-circuit: #0e7c86;
+  --ann-circuit-soft: #d9edee;
+  --ann-indigo: #363b6e;
+  --ann-indigo-soft: #e2e3ef;
+  --ann-muted: #8a8272;
+  --ann-line: #ddd7c8;
+
+  --slidev-theme-primary: var(--ann-circuit);
+}
+
+:root.dark {
+  --ann-paper: #14161b;
+  --ann-paper-raised: #1c1f26;
+  --ann-ink: #ece9e2;
+  --ann-ink-soft: #b7b3a8;
+  --ann-ember: #ff8058;
+  --ann-ember-soft: #3a2620;
+  --ann-circuit: #4fd0da;
+  --ann-circuit-soft: #17343a;
+  --ann-indigo: #9aa0e8;
+  --ann-indigo-soft: #262a4a;
+  --ann-muted: #938f80;
+  --ann-line: #33363f;
+}
+
+.slidev-layout {
+  background: var(--ann-paper);
+  color: var(--ann-ink);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--ann-ink);
+}
+
+.slidev-layout h1 {
+  font-size: 2.1rem;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+.slidev-layout h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.slidev-layout a {
+  color: var(--ann-circuit);
+}
+
+.slidev-layout code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.slidev-layout strong {
+  color: var(--ann-indigo);
+  font-weight: 600;
+}
+
+:root.dark .slidev-layout strong {
+  color: var(--ann-indigo);
+}
+
+/* ---- Shared typographic utilities used across slides ---- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ann-muted);
+  margin-bottom: 0.6em;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.eyebrow.why,
+.eyebrow.intuition,
+.eyebrow.biology {
+  color: var(--ann-ember);
+}
+
+.eyebrow.math,
+.eyebrow.practice {
+  color: var(--ann-circuit);
+}
+
+.eyebrow.structure {
+  color: var(--ann-indigo);
+}
+
+.key-message {
+  font-family: 'Space Grotesk', ui-sans-serif, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ann-indigo);
+  border-left: 3px solid var(--ann-indigo);
+  padding-left: 0.7em;
+  margin: 0.8em 0 1.1em;
+}
+
+.thesis {
+  font-family: 'Space Grotesk', ui-sans-serif, sans-serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.4;
+  color: var(--ann-ink);
+}
+
+.transition-line {
+  margin-top: 1.5em;
+  padding-top: 0.8em;
+  border-top: 1px dashed var(--ann-line);
+  font-size: 0.95rem;
+  color: var(--ann-ink-soft);
+}
+
+.transition-line .arrow {
+  color: var(--ann-circuit);
+  font-weight: 600;
+}
+
+/* ---- Generic pipeline / step chip, used outside Mermaid for tiny sequences ---- */
+
+.step-chip {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  background: var(--ann-paper-raised);
+  border: 1px solid var(--ann-line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+}
+
+/* ---- Mermaid container: keep diagrams from feeling like foreign objects ---- */
+
+.slidev-layout .mermaid,
+.slidev-layout .slidev-mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---- KaTeX sizing tweak: keep block equations readable but not oversized ---- */
+
+.slidev-layout .katex-display {
+  margin: 0.6em 0;
+}
+
+/* ---- Table styling: comparison tables should feel like a designed artifact ---- */
+
+.slidev-layout table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.slidev-layout table th {
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: left;
+  color: var(--ann-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--ann-ink);
+  padding: 0.5em 0.8em;
+}
+
+.slidev-layout table td {
+  padding: 0.55em 0.8em;
+  border-bottom: 1px solid var(--ann-line);
+  vertical-align: top;
+}
+
+.slidev-layout table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---------------------------------------------------------------
+   Shared blocks. Previously these were referenced by slides but
+   defined nowhere (.example-box, .title-cover) or defined only in a
+   single slide's local <style> (.statement-box). Promoted here so
+   both lecture decks can use them.
+   --------------------------------------------------------------- */
+
+.example-box {
+  background: var(--ann-paper-raised);
+  border: 1px solid var(--ann-line);
+  border-left: 4px solid var(--ann-muted);
+  border-radius: 0.5em;
+  padding: 0.2em 1em;
+  display: inline-block;
+  margin: 0.6em 0;
+}
+
+.statement-box {
+  background: var(--ann-indigo-soft);
+  color: var(--ann-indigo);
+  border-radius: 0.5em;
+  padding: 0.7em 1em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.slidev-layout.title-cover h1 {
+  font-size: 2.6rem;
+  line-height: 1.15;
+}
+
+.slidev-layout.title-cover h3 {
+  font-weight: 500;
+  color: var(--ann-ink-soft);
+  max-width: 30em;
+  margin-top: 0.5em;
+}
+
+/* ---------------------------------------------------------------
+   Lecture 2 additions.
+   Colour grammar extension, announced once on the worked-example
+   setup slide and then relied on silently:
+       teal   = forward   (what the network computes)
+       ember  = backward  (what the loss demands)
+       indigo = the update (where the two meet)
+   This keeps the deck's duotone logic intact - it always encodes
+   two opposing things.
+   --------------------------------------------------------------- */
+
+.eyebrow.forward { color: var(--ann-circuit); }
+.eyebrow.backward { color: var(--ann-ember); }
+
+/* Every number the audience must read is tabular so that a value
+   changing on a click (0.15 -> 0.1498) never shifts the layout. */
+.num,
+.slidev-layout .katex {
+  font-variant-numeric: tabular-nums;
+}
+
+.num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.num.fwd { color: var(--ann-circuit); }
+.num.bwd { color: var(--ann-ember); }
+.num.upd { color: var(--ann-indigo); font-weight: 600; }
+
+/* Horizontal strip of arithmetic that sits UNDER a diagram: the
+   diagram shows state, the strip shows the multiplication that
+   produced it. Keeps digits out of the picture. */
+.calc-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 0.45em;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.calc-chip {
+  background: var(--ann-paper-raised);
+  border: 1px solid var(--ann-line);
+  border-radius: 0.4em;
+  padding: 0.28em 0.6em;
+}
+
+.calc-chip.bwd { background: var(--ann-ember-soft); border-color: var(--ann-ember); }
+.calc-chip.fwd { background: var(--ann-circuit-soft); border-color: var(--ann-circuit); }
+.calc-chip .lbl {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ann-ink-soft);
+}
+.calc-op { color: var(--ann-muted); font-size: 1rem; }
+
+/* Mermaid renders edge labels on an opaque default background that clashes
+   with the paper palette. Applies to both decks. */
+.slidev-layout .mermaid .edgeLabel,
+.slidev-layout .mermaid .edgeLabel p,
+.slidev-layout .mermaid .edgeLabel rect {
+  background: var(--ann-paper) !important;
+  fill: var(--ann-paper) !important;
+  color: var(--ann-ink-soft) !important;
+}
