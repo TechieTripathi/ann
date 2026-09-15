@@ -10,6 +10,10 @@
     "dev:02": "slidev lecture-02-backpropagation.md --open",
     "build:02": "slidev build lecture-02-backpropagation.md",
     "export:02": "slidev export lecture-02-backpropagation.md",
+
+    "dev:03": "slidev lecture-03-pytorch.md --open",
+    "build:03": "slidev build lecture-03-pytorch.md",
+    "export:03": "slidev export lecture-03-pytorch.md",
     "verify": "python3 scripts/verify-numbers.py"
   },
   "dependencies": {

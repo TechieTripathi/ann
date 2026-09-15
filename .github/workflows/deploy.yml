@@ -30,6 +30,8 @@ jobs:
         run: npm run build -- --out dist/lecture-01 --base /${{ github.event.repository.name }}/lecture-01/ --router-mode hash
       - name: Build Lecture 2 (Backpropagation)
         run: npm run build:02 -- --out dist/lecture-02 --base /${{ github.event.repository.name }}/lecture-02/ --router-mode hash
+      - name: Build Lecture 3 (PyTorch)
+        run: npm run build:03 -- --out dist/lecture-03 --base /${{ github.event.repository.name }}/lecture-03/ --router-mode hash
       - name: Add course index
         run: cp landing/index.html dist/index.html
 

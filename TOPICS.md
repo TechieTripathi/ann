@@ -1,7 +1,7 @@
 # Lecture 1 · Artificial Neural Networks — Topic Summary
 
 A concise, one-idea-per-topic index. Mirrors the slide order in `lecture-01-ann.md`.
-Lecture 2's index is in `TOPICS-02.md`.
+Lecture 2's index is in `TOPICS-02.md`; Lecture 3's is in `TOPICS-03.md`.
 
 ## Chapter 1 · Why Machine Learning?
 

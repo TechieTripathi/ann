@@ -24,7 +24,7 @@ class: title-cover
     </g>
     <path d="M470,100 L600,100" stroke="var(--ann-ember)" stroke-width="3" />
     <path d="M600,100 L586,92 M600,100 L586,108" stroke="var(--ann-ember)" stroke-width="3" fill="none" />
-    <text x="470" y="86" font-family="JetBrains Mono" font-size="15" fill="var(--ann-ember)">blame</text>
+    <text x="470" y="86" font-family="JetBrains Mono" style="font-size:15px" fill="var(--ann-ember)">blame</text>
   </svg>
 </div>
 
