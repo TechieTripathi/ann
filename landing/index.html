@@ -44,6 +44,7 @@
   }
   a.deck:hover,a.deck:focus-visible{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.09)}
   a.deck.two{border-left-color:var(--ember)}
+  a.deck.three{border-left-color:var(--indigo)}
   .num{
     font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.68rem;
     letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
@@ -51,6 +52,7 @@
   .dt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;margin:.15em 0 .3em}
   a.deck .dt{color:var(--circuit)}
   a.deck.two .dt{color:var(--ember)}
+  a.deck.three .dt{color:var(--indigo)}
   .dd{font-size:.9rem;color:var(--ink-soft);margin:0}
   .meta{
     font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.7rem;
@@ -64,9 +66,9 @@
   <div class="eyebrow">Lecture series</div>
   <h1>Artificial Neural Networks</h1>
   <p class="sub">
-    A two-part conceptual introduction: from the limits of hand-written rules to a
-    single artificial neuron, and then to the mathematics that actually makes a
-    network learn. Use <kbd>←</kbd> and <kbd>→</kbd> to move; press <kbd>o</kbd> for
+    A three-part course: from the limits of hand-written rules to a single artificial
+    neuron, then to the mathematics that actually makes a network learn, and finally to
+    the framework that does it for you. Use <kbd>←</kbd> and <kbd>→</kbd> to move; press <kbd>o</kbd> for
     an overview of any deck.
   </p>
 
@@ -86,11 +88,19 @@
       rule, and one worked example computed entirely by hand — then written once for any network.</p>
       <div class="meta"><span>31 slides</span><span>~90 min</span><span>mathematics</span></div>
     </a>
+
+    <a class="deck three" href="lecture-03/">
+      <div class="num">Lecture 03</div>
+      <div class="dt">From Hand to Framework</div>
+      <p class="dd">The same network, in five lines of PyTorch — and the gradients checked, digit for
+      digit, against the ones computed by hand in Lecture 2.</p>
+      <div class="meta"><span>in progress</span><span>Ch. 1 of 5</span><span>code</span></div>
+    </a>
   </div>
 
   <footer>
     Built with <a href="https://sli.dev" style="color:var(--muted)">Slidev</a>.
-    Every figure in Lecture 02 is generated and checked by <code>scripts/verify-numbers.py</code>.
+    Every figure in Lectures 02 and 03 is generated and checked by <code>scripts/verify-numbers.py</code>.
   </footer>
 </div>
 </body>

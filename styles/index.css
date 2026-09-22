@@ -318,3 +318,58 @@
   fill: var(--ann-paper) !important;
   color: var(--ann-ink-soft) !important;
 }
+
+/* ---------------------------------------------------------------
+   Lecture 3 additions.
+   The first deck in this series to put real code on screen.
+
+   Slidev's default code background is a flat grey (#f5f5f5 light,
+   #1b1b1b dark) which reads as a foreign object against the warm
+   paper ground. Everything below re-points Slidev's own code
+   variables at the palette, so a fenced block sits on the slide the
+   way .example-box does - same raised paper, same rule, same radius.
+
+   Shiki's token colours are left alone: the default vitesse pair is
+   already warm, and it swaps itself on .dark via --shiki-light /
+   --shiki-dark. Only the surface is ours.
+   --------------------------------------------------------------- */
+
+:root {
+  --slidev-code-background: var(--ann-paper-raised);
+  --slidev-code-font-size: 13px;
+  --slidev-code-line-height: 21px;
+  --slidev-code-padding: 0.75em 1em;
+  --slidev-code-radius: 0.5em;
+  --slidev-code-margin: 0.6em 0;
+}
+
+.slidev-layout .slidev-code {
+  border: 1px solid var(--ann-line);
+  font-variant-ligatures: none;
+}
+
+/* Per-click line highlighting. Slidev marks the active lines and fades
+   the rest via .slidev-code-dishonored. The fade IS the focus cue - do not
+   also tint the active line, or the final `all` stage (every line active)
+   turns into a block of ragged coloured bands. Fade a little less hard
+   than Slidev's 0.3 default, which is unreadable on a projector. */
+.slidev-layout .slidev-code .slidev-code-dishonored {
+  opacity: 0.4;
+}
+
+/* A printed program output, as distinct from the program. Mono, muted,
+   no chrome - it is a transcript, not a code listing. */
+pre.output {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ann-ink-soft);
+  background: var(--ann-paper);
+  border-left: 3px solid var(--ann-line);
+  border-radius: 0;
+  padding: 0.45em 0.9em;
+  margin: 0.45em 0;
+  white-space: pre;
+  overflow-x: auto;
+  font-variant-numeric: tabular-nums;
+}

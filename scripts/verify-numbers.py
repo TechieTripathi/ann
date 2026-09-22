@@ -4,6 +4,8 @@ Authoritative source for every number in Lecture 2 (Backpropagation).
 
 Run:  python3 scripts/verify-numbers.py
       python3 scripts/verify-numbers.py --torch   (also cross-check with autograd)
+      python3 scripts/verify-numbers.py --nn      (also cross-check the nn.Sequential
+                                                   path that Lecture 3 puts on screen)
 
 Network: 2-2-2, sigmoid everywhere, MSE loss, eta = 0.5.
 
@@ -178,6 +180,23 @@ def main():
 
     if '--torch' in sys.argv:
         cross_check(r, L0)
+    if '--nn' in sys.argv:
+        cross_check_sequential(r, L0)
+
+
+def _report(checks):
+    """Print a (name, hand, torch) table and return True if every row matches.
+
+    Shared by both cross-checks so the tolerance and the DO-NOT-SHIP banner are
+    stated in exactly one place.
+    """
+    ok = True
+    for name, hand, t in checks:
+        m = abs(hand - t) < 5e-9
+        ok &= m
+        print(f"  {name:<9} hand {hand: .9f}   torch {t: .9f}   {'OK' if m else 'MISMATCH'}")
+    print("\n  ALL MATCH" if ok else "\n  *** MISMATCH - DO NOT SHIP ***")
+    return ok
 
 
 def cross_check(r, L_total):
@@ -212,12 +231,109 @@ def cross_check(r, L_total):
               ("dL/db1b", r['gb']['b1b'], b1.grad[1].item()),
               ("dL/db2a", r['gb']['b2a'], b2.grad[0].item()),
               ("dL/db2b", r['gb']['b2b'], b2.grad[1].item())]
-    ok = True
-    for name, hand, t in checks:
-        m = abs(hand - t) < 5e-9
-        ok &= m
-        print(f"  {name:<9} hand {hand: .9f}   torch {t: .9f}   {'OK' if m else 'MISMATCH'}")
-    print("\n  ALL MATCH" if ok else "\n  *** MISMATCH - DO NOT SHIP ***")
+    _report(checks)
+
+
+def cross_check_sequential(r, L_total):
+    """Verify the exact nn.Sequential path Lecture 3 puts on screen.
+
+    Lecture 3 Chapter 1 claims that five lines of PyTorch reproduce the whole of
+    Lecture 2's worked example. Everything it prints on a slide is asserted here.
+
+    Two things make the mapping exact, and both are worth knowing:
+
+      * nn.Linear stores weight as [out_features, in_features], which is already
+        the layout this script uses - row = output neuron. So net[0].weight is
+        literally [[w1, w2], [w3, w4]] and the gradients read at the same indices.
+      * nn.Linear gives every neuron its own bias and the optimiser updates it.
+        That is our deliberate divergence from Mazur, so torch lands on OUR
+        post-step loss (0.280471447), not his (0.291027924).
+    """
+    try:
+        import torch
+        import torch.nn as nn
+    except ImportError:
+        print("\n[--nn] PyTorch not installed; skipping nn.Sequential cross-check.")
+        return
+    td = torch.float64
+    print("\n" + "=" * 66)
+    print("LECTURE 3 CROSS-CHECK  nn.Sequential + SGD  (float64)")
+    print("=" * 66)
+
+    x = torch.tensor([I1, I2], dtype=td)
+    y = torch.tensor([T1, T2], dtype=td)
+    net = nn.Sequential(nn.Linear(2, 2), nn.Sigmoid(),
+                        nn.Linear(2, 2), nn.Sigmoid()).double()
+    with torch.no_grad():
+        net[0].weight.copy_(torch.tensor([[W0['w1'], W0['w2']],
+                                          [W0['w3'], W0['w4']]], dtype=td))
+        net[0].bias.copy_(torch.tensor([B0['b1a'], B0['b1b']], dtype=td))
+        net[2].weight.copy_(torch.tensor([[W0['w5'], W0['w6']],
+                                          [W0['w7'], W0['w8']]], dtype=td))
+        net[2].bias.copy_(torch.tensor([B0['b2a'], B0['b2b']], dtype=td))
+
+    opt = torch.optim.SGD(net.parameters(), lr=ETA)
+    out = net(x)
+    lo = 0.5 * ((out - y) ** 2).sum()
+    opt.zero_grad()
+    lo.backward()
+
+    gw1, gw2 = net[0].weight.grad, net[2].weight.grad
+    gb1, gb2 = net[0].bias.grad, net[2].bias.grad
+    print("\n  gradients - the numbers Lecture 3 prints beside slide 22")
+    grads = [("L_total", L_total, lo.item()),
+             ("dL/dw1", r['g']['w1'], gw1[0, 0].item()),
+             ("dL/dw2", r['g']['w2'], gw1[0, 1].item()),
+             ("dL/dw3", r['g']['w3'], gw1[1, 0].item()),
+             ("dL/dw4", r['g']['w4'], gw1[1, 1].item()),
+             ("dL/dw5", r['g']['w5'], gw2[0, 0].item()),
+             ("dL/dw6", r['g']['w6'], gw2[0, 1].item()),
+             ("dL/dw7", r['g']['w7'], gw2[1, 0].item()),
+             ("dL/dw8", r['g']['w8'], gw2[1, 1].item()),
+             ("dL/db1a", r['gb']['b1a'], gb1[0].item()),
+             ("dL/db1b", r['gb']['b1b'], gb1[1].item()),
+             ("dL/db2a", r['gb']['b2a'], gb2[0].item()),
+             ("dL/db2b", r['gb']['b2b'], gb2[1].item())]
+    ok = _report(grads)
+
+    # One step. This is the half the --torch path never covered.
+    opt.step()
+    Wn, Bn = step(W0, B0)
+    print("\n  after one opt.step() - the updated parameters")
+    updated = [("w1", Wn['w1'], net[0].weight[0, 0].item()),
+               ("w2", Wn['w2'], net[0].weight[0, 1].item()),
+               ("w3", Wn['w3'], net[0].weight[1, 0].item()),
+               ("w4", Wn['w4'], net[0].weight[1, 1].item()),
+               ("w5", Wn['w5'], net[2].weight[0, 0].item()),
+               ("w6", Wn['w6'], net[2].weight[0, 1].item()),
+               ("w7", Wn['w7'], net[2].weight[1, 0].item()),
+               ("w8", Wn['w8'], net[2].weight[1, 1].item()),
+               ("b1a", Bn['b1a'], net[0].bias[0].item()),
+               ("b1b", Bn['b1b'], net[0].bias[1].item()),
+               ("b2a", Bn['b2a'], net[2].bias[0].item()),
+               ("b2b", Bn['b2b'], net[2].bias[1].item())]
+    ok &= _report(updated)
+
+    with torch.no_grad():
+        oo1n, oo2n = net(x)
+    L1 = loss(oo1n.item(), oo2n.item())
+    print(f"\n  loss after one step   {L1:.9f}   (ours, biases updated)")
+    print(f"  w7 rose              {W0['w7']:.4f} -> {net[2].weight[1, 0].item():.9f}"
+          "   <- the minus sign does not mean 'decrease'")
+
+    # The coincidence Lecture 3 warns about: nn.MSELoss() reduces by MEAN, which
+    # equals our 1/2 sum only because there are exactly two outputs.
+    print("\n  nn.MSELoss() vs our 1/2 * sum - agreement is a two-output accident")
+    o2 = torch.tensor([0.75136507, 0.77292847], dtype=td)
+    print(f"    n=2  ours {0.5*((o2-y)**2).sum().item():.9f}"
+          f"   MSELoss {nn.MSELoss()(o2, y).item():.9f}   <- identical")
+    o3 = torch.tensor([0.75, 0.77, 0.60], dtype=td)
+    y3 = torch.tensor([0.01, 0.99, 0.50], dtype=td)
+    print(f"    n=3  ours {0.5*((o3-y3)**2).sum().item():.9f}"
+          f"   MSELoss {nn.MSELoss()(o3, y3).item():.9f}   <- they diverge")
+
+    if not ok:
+        print("\n  *** LECTURE 3 SLIDES ARE WRONG - DO NOT SHIP ***")
 
 
 if __name__ == '__main__':

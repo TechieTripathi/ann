@@ -4,8 +4,9 @@ A reader's guide to this repository: *why* the lectures are sequenced the way th
 *what* visual language encodes that sequence, *which* concrete examples carry it, and
 *what* files actually exist.
 
-For the slide-by-slide index see [TOPICS.md](../TOPICS.md) (Lecture 1) and
-[TOPICS-02.md](../TOPICS-02.md) (Lecture 2). For how to run and deploy, see [README.md](../README.md).
+For the slide-by-slide index see [TOPICS.md](../TOPICS.md) (Lecture 1),
+[TOPICS-02.md](../TOPICS-02.md) (Lecture 2) and [TOPICS-03.md](../TOPICS-03.md) (Lecture 3).
+For how to run and deploy, see [README.md](../README.md).
 
 ---
 
@@ -13,14 +14,16 @@ For the slide-by-slide index see [TOPICS.md](../TOPICS.md) (Lecture 1) and
 
 ### 1.1 The spine
 
-The two decks are one argument delivered in two sittings. The whole series is driven by a
+The decks are one argument delivered across successive sittings. The whole series is driven by a
 single question and its consequences:
 
 > Can a computer learn *useful features* by itself, instead of being handed features a
 > human designed?
 
 Lecture 1 answers **yes, in principle**, and shows the machinery. Lecture 2 answers
-**here is exactly how**, on real digits.
+**here is exactly how**, on one small network worked entirely by hand. Lecture 3 answers
+**and here is that same thing in the tools everyone actually uses** — first by auditing a
+framework against Lecture 2's own arithmetic, then on real digits.
 
 ```
 Rules break down
@@ -35,6 +38,11 @@ Rules break down
   → the same thing in matrix form, for any network
   → vanishing gradients, and the two fixes
   → epoch / batch / iteration / SGD       ───── LECTURE 2 ENDS
+  → "five lines of PyTorch, checked against your numbers"
+  → autograd is the same recursion, recorded  ── LECTURE 3 CH. 1 ENDS
+  → but this network has seen ONE example
+  → a dataset · the loop · optimizers
+  → it fits — does it generalize?          ───── LECTURE 3 ENDS
 ```
 
 ### 1.2 The hand-off between the decks
@@ -107,7 +115,29 @@ stated explicitly on the "Where we're going" roadmap slide.
    answering one question: *when do we step?* Closes by re-showing Lecture 1's training
    loop with an equation under every box.
 
-### 1.5 Recurring pedagogical devices
+### 1.5 Lecture 3 — chapter logic
+
+Lectures 1 and 2 each opened on a *debt*: a sentence whose words had not been defined.
+Lecture 3 opens on a **promise** instead, and Chapter 1 is an audit of it. The structural
+question is no longer "what did we leave undefined?" but "did we tell you the truth?"
+
+1. **The five lines** — The 2-2-2 network of Chapter 4, typed into PyTorch. The framework
+   prints the same gradients, to nine decimals; `SGD(lr=0.5)` reproduces the same updated
+   weights, including w₇ *rising*; and it lands on **our** post-step loss rather than
+   Mazur's, because `nn.Linear` updates biases. One trap is dismantled on the way —
+   `nn.MSELoss()` agrees with `½Σ(o−t)²` only because this network has two outputs. The
+   chapter closes on `grad_fn`: autograd is the Chapter 5 recursion replayed over a graph
+   the forward pass recorded, plus one new rule (`zero_grad`) with no hand-method
+   counterpart.
+2. **From one example to a dataset** *(planned)* — The real debt of the whole series.
+   Epoch / batch / iteration were defined in Lecture 2 Chapter 6 and never exercised:
+   every number so far came from a network that has seen **one** training example.
+3. **The loop you already know** *(planned)* — One line per box of Lecture 1's diagram.
+4. **What nothing computes for you** *(planned)* — η, momentum, Adam.
+5. **It fits. Does it generalize?** *(planned)* — The first point in the series where
+   "the loss went down" stops being the goal.
+
+### 1.6 Recurring pedagogical devices
 
 - **Misconception → clarification.** Every chapter pre-empts the specific wrong idea
   students actually form, in a `<Callout>`. Not decoration: each one is the hinge of its
@@ -161,7 +191,7 @@ Loaded from Google Fonts via the deck frontmatter (`Inter`, `Space Grotesk`,
 
 ### 2.3 Shared typographic components
 
-Utility classes in `styles/index.css`, used across both decks:
+Utility classes in `styles/index.css`, used across all decks:
 
 | Class | Role |
 |---|---|
@@ -178,7 +208,7 @@ Slide-local `<style>` blocks add one-off pieces (`.task-grid`, `.algo-grid`,
 
 ### 2.4 Layout & interaction conventions
 
-- **16:9, `canvasWidth: 980`, `colorSchema: light`, `transition: fade`** on both decks.
+- **16:9, `canvasWidth: 980`, `colorSchema: light`, `transition: fade`** on every deck.
 - **Layouts used:** `cover` (+ `class: title-cover`), `section` for chapter dividers,
   `statement` for hinge questions, `quote` for the closing one-sentence synthesis,
   `two-cols-header`, `end`.
@@ -198,12 +228,24 @@ Slide-local `<style>` blocks add one-off pieces (`.task-grid`, `.algo-grid`,
   (`primaryColor` teal, `secondaryColor` ember, `tertiaryColor`/indigo borders) plus a
   global override so edge labels sit on `--ann-paper` instead of Mermaid's opaque default.
 
-### 2.5 One design system, two decks
+### 2.5 One design system, three decks
 
 `styles/index.css`, `components/` and `global-bottom.vue` are picked up by Slidev for *any*
-entry file in the repo root, because `userRoot` is the entry file's folder. **Both entry
-files must stay at the root** — moving a deck into a subfolder would force a duplicated
+entry file in the repo root, because `userRoot` is the entry file's folder. **Every entry
+file must stay at the root** — moving a deck into a subfolder would force a duplicated
 copy of the design system.
+
+**Code blocks (Lecture 3).** Lectures 1 and 2 contain no code: every fence is `mermaid` or
+`text`. Lecture 3 is the first deck to show a program, and Slidev's default code background
+is a flat grey that reads as a foreign object on the paper ground. The fix, at the end of
+`styles/index.css`, re-points Slidev's own `--slidev-code-*` variables at the palette so a
+fence sits on the slide the way `.example-box` does. Shiki's token colours are deliberately
+left alone — the default pair is already warm and swaps itself in dark mode. One rule worth
+knowing before editing it: **do not tint the highlighted line.** Slidev signals focus by
+fading the *other* lines (`.slidev-code-dishonored`), so a tint on the active line turns the
+final `all` stage — where every line is active — into a block of ragged coloured bands.
+`pre.output`, in the same block, is for printed program *output*: mono, tabular, no chrome,
+because a transcript is not a listing.
 
 ---
 
@@ -291,6 +333,7 @@ tripped on:
 | The error "flows backward" like a reversed signal | Nothing flows. The network is **inert**; "backward" names an order of evaluation | L2 Ch. 3 |
 | MSE and cross-entropy are interchangeable | A loss matters *only through its derivative* | L2 Ch. 5 |
 | SGD is a different algorithm from gradient descent | Identical update rule; only the sample the gradient is estimated from changes | L2 Ch. 6 |
+| The framework must be doing something cleverer than I did by hand | Same recursion, same order, same numbers — that is why the digits match to nine places. It adds *bookkeeping*, not mathematics | L3 Ch. 1 |
 
 ---
 
@@ -301,11 +344,14 @@ tripped on:
 ```
 lecture-01-ann.md                 entry: frontmatter (theme, fonts, 16:9) + 6 src includes
 lecture-02-backpropagation.md     entry: same design frontmatter, 7 src includes
+lecture-03-pytorch.md             entry: same design frontmatter, 2 src includes (in progress)
 pages-01-ann/                     00-title · 01-why-ml · 02-biology · 03-neuron-math
                                   04-learning · 05-deep-learning
 pages-02-backpropagation/         00-title · 01-loss-functions · 02-gradient-descent
                                   03-credit-assignment · 04-by-hand · 05-general-case
                                   06-synthesis
+pages-03-pytorch/                 00-title · 01-five-lines
+                                  (chapters 2-5 planned, see TOPICS-03.md)
 styles/index.css                  the design system — palette, utilities, Mermaid/KaTeX fixes
 global-bottom.vue                 chapter + page-number footer, on every non-divider slide
 public/images/                    ann-architecture-wikimedia.svg
@@ -336,6 +382,14 @@ gradients, the updated parameters, and the loss after 1 and 10,000 steps.
 > **If a slide disagrees with that script, the slide is wrong.** The same rule is stated in
 > the script's docstring, in `BackpropTrace.vue`'s header, and in the README.
 
+`--nn` extends the same rule to Lecture 3, which prints framework output verbatim on its
+slides. It builds the exact `nn.Sequential` the deck shows, and asserts 25 values against the
+hand derivation: the loss, all twelve gradients, and all twelve parameters after one
+`opt.step()` — the last of which the `--torch` path never covered. It also prints the
+`nn.MSELoss()` comparison at two and three outputs, which is the evidence for the Chapter 1
+slide claiming the agreement is a two-output accident. Both cross-checks share one reporting
+helper, so the 5e-9 tolerance and the DO-NOT-SHIP banner are stated in exactly one place.
+
 ### 4.4 Documentation artifacts
 
 | File | Purpose |
@@ -343,6 +397,7 @@ gradients, the updated parameters, and the loss after 1 and 10,000 steps.
 | [README.md](../README.md) | How to run, why the shared design system requires both entries at the root, why the build uses hash routing |
 | [TOPICS.md](../TOPICS.md) | One-idea-per-topic index for Lecture 1, mirroring slide order |
 | [TOPICS-02.md](../TOPICS-02.md) | Same for Lecture 2, opening with "the spine" — the five undefined phrases |
+| [TOPICS-03.md](../TOPICS-03.md) | Same for Lecture 3, whose spine is a *promise* being audited rather than a debt being paid |
 | `docs/CONCEPT.md` | This file — concept flow, theme, examples, artifacts |
 
 Presenter notes are themselves an artifact: the HTML comment at the bottom of nearly every
@@ -354,15 +409,16 @@ with its answer, and the transition into the next slide.
 `npm run dev` / `dev:02` serve a deck locally; `build` / `build:02` and `export` /
 `export:02` produce a static site and a PDF respectively.
 
-[.github/workflows/deploy.yml](../.github/workflows/deploy.yml) builds both decks plus the
+[.github/workflows/deploy.yml](../.github/workflows/deploy.yml) builds all three decks plus the
 landing page into a single GitHub Pages artifact on every push to `main`:
 
 ```
 /                   landing/index.html   course index
 /lecture-01/        Lecture 1
 /lecture-02/        Lecture 2
+/lecture-03/        Lecture 3
 ```
 
-Both decks are built with `--router-mode hash`, because GitHub Pages serves only a **root**
+All decks are built with `--router-mode hash`, because GitHub Pages serves only a **root**
 `404.html` — a per-deck SPA fallback in a subdirectory is never used, so history-mode deep
 links would 404.

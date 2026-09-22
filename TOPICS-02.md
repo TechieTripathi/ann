@@ -1,6 +1,7 @@
 # Lecture 2 · Backpropagation — Topic Summary
 
 A concise, one-idea-per-topic index. Mirrors the slide order in `lecture-02-backpropagation.md`.
+Lecture 1's index is in `TOPICS.md`; Lecture 3's is in `TOPICS-03.md`.
 
 **The spine.** Lecture 1 ended with "backpropagation computes exactly how much *each* weight
 contributed to the loss, and nudges it *slightly* in *the direction that reduces it*." Five phrases
